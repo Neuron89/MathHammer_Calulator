@@ -1,0 +1,114 @@
+body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    color: #ff4444;
+    text-align: center;
+}
+
+.section-title {
+    color: #ff9944;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+.stat-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 10px 0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.stat-box {
+    background-color: #333;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.stat-label {
+    color: #ff9944;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.split-button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.button-with-count {
+    position: relative;
+}
+
+.split-button {
+    display: flex;
+    background-color: #444;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.split-button.active {
+    background-color: #ff4444;
+}
+
+.split-button.active .split-button-half:hover {
+    background-color: #ff5555;
+}
+
+.split-button-half {
+    flex: 1;
+    padding: 8px 0;
+    text-align: center;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.split-button-half:hover {
+    background-color: #555;
+}
+
+.split-button-half.minus {
+    border-right: 1px solid #666;
+}
+
+.current-value {
+    font-size: 1.4em;
+    color: #ff4444;
+    margin: 10px 0;
+}
+
+#submitBtn {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 30px;
+    background-color: #ff4444;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+#submitBtn:hover {
+    background-color: #ff5555;
+}
+
+.results {
+    background-color: #333;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    border-radius: 5px;
+    text-align: center;
+}
+
