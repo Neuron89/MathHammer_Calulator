@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MathHammer</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff4444;
+            text-align: center;
+        }
+        .section-title {
+            color: #ff9944;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .stat-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 10px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .stat-box {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .stat-label {
+            color: #ff9944;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .split-button-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 5px 0;
+        }
+        .button-with-count {
+            position: relative;
+        }
+        .count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .split-button {
+            display: flex;
+            background-color: #444;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .split-button.active {
+            background-color: #ff4444;
+        }
+        .split-button.active .split-button-half:hover {
+            background-color: #ff5555;
+        }
+        .split-button-half {
+            flex: 1;
+            padding: 8px 0;
+            text-align: center;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+        .split-button-half:hover {
+            background-color: #555;
+        }
+        .split-button-half.minus {
+            border-right: 1px solid #666;
+        }
+        .split-button-value {
+            font-size: 1.2em;
+            color: #fff;
+        }
+        .current-value {
+            font-size: 1.4em;
+            color: #ff4444;
+            margin: 10px 0;
+        }
+        #submitBtn {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 30px;
+            background-color: #ff4444;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        #submitBtn:hover {
+            background-color: #ff5555;
+        }
+        .results {
+            background-color: #333;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 400px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function SplitButton({ value, isActive, activeCount, onChange }) {
+            return (
+                <div className={`split-button ${activeCount > 0 ? 'active' : ''}`}>
+                    <div 
+                        className="split-button-half minus" 
+                        onClick={() => onChange(value, false)}
+                    >
+                        -
+                    </div>
+                    <div 
+                        className="split-button-half plus"
+                        onClick={() => onChange(value, true)}
+                    >
+                        {value}
+                    </div>
+                </div>
+            );
+        }
+
+        function StatBox({ label, value, onChange }) {
+            
+            return (
+                <div className="stat-box">
+                    <div className="stat-label">{label}</div>
+                    <div className="current-value">{value}</div>
+                    <div className="split-button-container">
+                        <div className="button-with-count">
+                            <SplitButton 
+                                value={1} 
+                                activeCount={value > 0 ? 1 : 0}
+                                onChange={onChange} 
+                            />
+                        </div>
+                        <div className="button-with-count">
+                            <SplitButton 
+                                value={5} 
+                                activeCount={value > 0 ? 1 : 0}
+                                onChange={onChange} 
+                            />
+                        </div>
+                        <div className="button-with-count">
+                            <SplitButton 
+                                value={10} 
+                                activeCount={value > 0 ? 1 : 0}
+                                onChange={onChange} 
+                            />
+                        </div>
+                        <div className="button-with-count">
+                            <SplitButton 
+                                value={25} 
+                                activeCount={value > 0 ? 1 : 0}
+                                onChange={onChange} 
+                            />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function App() {
+            const [values, setValues] = React.useState({
+                attacks: 0,
+                bs: 0,
+                strength: 0,
+                armorPen: 0,
+                toughness: 0,
+                armorSave: 0,
+                invSave: 0
+            });
+
+            const handleValueChange = (statName, value, isAdding) => {
+                setValues(prev => ({
+                    ...prev,
+                    [statName]: Math.max(0, prev[statName] + (isAdding ? value : -value))
+                }));
+            };
+
+            const handleCalculate = () => {
+                // Calculation logic here
+                console.log('Calculating with stats:', values);
+            };
+
+            return (
+                <div>
+                    <h1>MathHammer</h1>
+                    <p className="section-title">YOUR UNIT</p>
+                    <div className="stat-container">
+                        <StatBox 
+                            label="Attacks" 
+                            value={values.attacks}
+                            onChange={(value, isAdding) => handleValueChange('attacks', value, isAdding)}
+                        />
+                        <StatBox 
+                            label="BS" 
+                            value={values.bs}
+                            onChange={(value, isAdding) => handleValueChange('bs', value, isAdding)}
+                        />
+                        <StatBox 
+                            label="Strength" 
+                            value={values.strength}
+                            onChange={(value, isAdding) => handleValueChange('strength', value, isAdding)}
+                        />
+                        <StatBox 
+                            label="Armor Pen" 
+                            value={values.armorPen}
+                            onChange={(value, isAdding) => handleValueChange('armorPen', value, isAdding)}
+                        />
+                    </div>
+                    
+                    <p className="section-title">ENEMY UNIT</p>
+                    <div className="stat-container">
+                        <StatBox 
+                            label="Toughness" 
+                            value={values.toughness}
+                            onChange={(value, isAdding) => handleValueChange('toughness', value, isAdding)}
+                        />
+                        <StatBox 
+                            label="Armor Save" 
+                            value={values.armorSave}
+                            onChange={(value, isAdding) => handleValueChange('armorSave', value, isAdding)}
+                        />
+                        <StatBox 
+                            label="Inv Save" 
+                            value={values.invSave}
+                            onChange={(value, isAdding) => handleValueChange('invSave', value, isAdding)}
+                    />
+                    </div>
+                    
+                    <button id="submitBtn" onClick={handleCalculate}>Calculate</button>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
